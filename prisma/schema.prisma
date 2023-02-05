@@ -6,22 +6,31 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+    provider          = "postgresql"
+    url               = env("DATABASE_URL")
+    shadowDatabaseUrl = env("SHADOW_URL")
 }
 
 model User {
-    userId     String   @id @unique @default(uuid())
-    fullname   String
-    number     String
-    username   String   @unique
-    password   String
-    role       String
-    roleId     Role     @relation(fields: [role], references: [roleId])
-    image      Bytes?
-    modifiedBy String?
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @default(now())
+    userId      String   @id @unique @default(uuid())
+    firstname   String
+    lastname    String
+    gender      Int
+    genderId    Gender   @relation(fields: [gender], references: [genderId])
+    nationalId  String
+    email       String
+    phonenumber String
+    username    String   @unique
+    password    String
+    role        String
+    roleId      Role     @relation(fields: [role], references: [roleId])
+    image       String?
+    action      Int      @default(1)
+    modifiedBy  String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @default(now())
+    Plan        Plan[]
+    Post        Post[]
 }
 
 enum ROLE_NAME {
@@ -31,10 +40,89 @@ enum ROLE_NAME {
 }
 
 model Role {
-    roleId     String    @id @unique @default(uuid())
-    rolename   ROLE_NAME @unique
+    roleId   String    @id @unique @default(uuid())
+    rolecode String    @unique
+    rolename ROLE_NAME @unique
+    // modifiedBy String?
+    // createdAt  DateTime  @default(now())
+    // updatedAt  DateTime  @default(now())
+    User     User[]
+}
+
+model Gender {
+    genderId Int    @unique @default(autoincrement())
+    gender   String
+    User     User[]
+}
+
+model Store {
+    storeId          String             @id @unique @default(uuid())
+    storeName        String
+    storeAddress     String
+    storeNumber      String
+    description      String
+    action           Int                @default(1)
+    modifiedBy       String?
+    createdAt        DateTime           @default(now())
+    updatedAt        DateTime           @default(now())
+    StoreCertificate StoreCertificate[]
+    Plan             Plan[]
+    StoreImage       StoreImage[]
+}
+
+model Certificate {
+    certificateId    String             @id @unique @default(uuid())
+    name             String
+    description      String
+    image            String
+    action           Int
+    modifiedBy       String?
+    createdAt        DateTime           @default(now())
+    updatedAt        DateTime           @default(now())
+    StoreCertificate StoreCertificate[]
+}
+
+model StoreCertificate {
+    id           String      @id @unique @default(uuid())
+    cetificateId String
+    certifacate  Certificate @relation(fields: [cetificateId], references: [certificateId])
+    storeId      String
+    store        Store       @relation(fields: [storeId], references: [storeId])
+    action       Int
+    modifiedBy   String?
+    createdAt    DateTime    @default(now())
+    updatedAt    DateTime    @default(now())
+}
+
+model Plan {
+    planId     String   @id @unique @default(uuid())
+    userId     String
+    user       User     @relation(fields: [userId], references: [userId])
+    storeId    String
+    store      Store    @relation(fields: [storeId], references: [storeId])
+    //time 
+    action     Int
     modifiedBy String?
-    createdAt  DateTime  @default(now())
-    updatedAt  DateTime  @default(now())
-    User       User[]
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @default(now())
+}
+
+model Post {
+    postId     String   @id @unique @default(uuid())
+    userId     String
+    user       User     @relation(fields: [userId], references: [userId])
+    tilte      String
+    action     Int
+    modifiedBy String?
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @default(now())
+}
+
+model StoreImage {
+    imageId    String   @id @unique @default(uuid())
+    storeId    String
+    store      Store    @relation(fields: [storeId], references: [storeId])
+    modifiedBy String?
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @default(now())
 }

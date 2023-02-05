@@ -7,11 +7,18 @@ import cors from "cors"
 const app = express()
 
 
-app.use(cors())
+app.use(cors({
+    origin: "*",
+    credentials: true,
+}))
 app.use(morgan("dev"))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-
+app.get("/", (req, res) => {
+    return res.status(200).json({
+        name: "API by MINHNGOC"
+    })
+})
 app.use("/api/v1", router)
 export default app

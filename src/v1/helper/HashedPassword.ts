@@ -10,6 +10,6 @@ export const createJWT = async (data) => {
     const { userId, username, role } = data
     const token = jwt.sign({
         userId: userId, username: username, role: role
-    }, process.env.JWT_SECRET)
+    }, process.env.JWT_SECRECT)
     return token
 }
