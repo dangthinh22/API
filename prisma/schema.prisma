@@ -18,9 +18,8 @@ model User {
     gender      Int
     genderId    Gender   @relation(fields: [gender], references: [genderId])
     nationalId  String
-    email       String
+    email       String   @unique
     phonenumber String
-    username    String   @unique
     password    String
     role        String
     roleId      Role     @relation(fields: [role], references: [roleId])
@@ -28,7 +27,7 @@ model User {
     action      Int      @default(1)
     modifiedBy  String?
     createdAt   DateTime @default(now())
-    updatedAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
     Plan        Plan[]
     Post        Post[]
 }
@@ -64,7 +63,7 @@ model Store {
     action           Int                @default(1)
     modifiedBy       String?
     createdAt        DateTime           @default(now())
-    updatedAt        DateTime           @default(now())
+    updatedAt        DateTime           @updatedAt
     StoreCertificate StoreCertificate[]
     Plan             Plan[]
     StoreImage       StoreImage[]
@@ -78,7 +77,7 @@ model Certificate {
     action           Int
     modifiedBy       String?
     createdAt        DateTime           @default(now())
-    updatedAt        DateTime           @default(now())
+    updatedAt        DateTime           @updatedAt
     StoreCertificate StoreCertificate[]
 }
 
@@ -91,7 +90,7 @@ model StoreCertificate {
     action       Int
     modifiedBy   String?
     createdAt    DateTime    @default(now())
-    updatedAt    DateTime    @default(now())
+    updatedAt    DateTime    @updatedAt
 }
 
 model Plan {
@@ -104,7 +103,7 @@ model Plan {
     action     Int
     modifiedBy String?
     createdAt  DateTime @default(now())
-    updatedAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
 }
 
 model Post {
@@ -115,7 +114,7 @@ model Post {
     action     Int
     modifiedBy String?
     createdAt  DateTime @default(now())
-    updatedAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
 }
 
 model StoreImage {
@@ -124,5 +123,5 @@ model StoreImage {
     store      Store    @relation(fields: [storeId], references: [storeId])
     modifiedBy String?
     createdAt  DateTime @default(now())
-    updatedAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
 }

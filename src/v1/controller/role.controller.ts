@@ -1,6 +1,7 @@
+import { Request, Response } from 'express';
 import { CreateRoleService, GetAllRoleService } from './../service/role.service';
 
-export const CreateRole = async (req, res) => {
+export const CreateRole = async (req: Request, res: Response) => {
     const data = req.body
     try {
         const role = await CreateRoleService(data)
@@ -12,7 +13,7 @@ export const CreateRole = async (req, res) => {
 
     }
 }
-export const GetAllRole = async (req, res) => {
+export const GetAllRole = async (req: Request, res: Response) => {
     try {
         const roles = await GetAllRoleService();
         return res.status(200).json({ roles })

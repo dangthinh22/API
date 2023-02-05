@@ -4,11 +4,11 @@ import { SigninService } from './auth.service';
 
 
 export const CreateUserService = async (data) => {
-    const { firstname, lastname, genderId, nationalId, email, phonenumber, username, password, roleId, image } = data;
+    const { firstname, lastname, genderId, nationalId, email, phonenumber, password, roleId, image } = data;
 
     const hashedPassword = await HashPassword(password)
     const login = {
-        username: username,
+        email: email,
         password: password
     }
     await prisma.user.create({
@@ -19,7 +19,6 @@ export const CreateUserService = async (data) => {
             nationalId: nationalId,
             email: email,
             phonenumber: phonenumber,
-            username: username,
             password: hashedPassword,
             role: roleId,
             image: image
@@ -37,7 +36,13 @@ export const GetUserService = async (data) => {
             userId: data
         }, select: {
             userId: true,
-            username: true,
+            firstname: true,
+            lastname: true,
+            gender: true,
+            nationalId: true,
+            email: true,
+            phonenumber: true,
+            action: true,
             roleId: {
                 select: {
                     roleId: true,
@@ -50,6 +55,60 @@ export const GetUserService = async (data) => {
 }
 
 export const GetAllUsersService = async () => {
-    const users = await prisma.user.findMany()
+    const users = await prisma.user.findMany({
+        select: {
+            userId: true,
+            firstname: true,
+            lastname: true,
+            gender: true,
+            nationalId: true,
+            email: true,
+            phonenumber: true,
+            action: true,
+            roleId: {
+                select: {
+                    roleId: true,
+                    rolename: true
+                }
+            },
+        }
+    })
     return users
+}
+export const UpdateUserService = async (data) => {
+    let message = {
+        message: ""
+    }
+    const { userId, firstname, lastname, gender, nationalId, email, phonenumber } = data
+    const oldUser = await GetUserService(userId);
+    await prisma.user.update({
+        where: {
+            userId: userId,
+        }, data: {
+            firstname: firstname || oldUser.firstname,
+            lastname: lastname || oldUser.lastname,
+            gender: gender || oldUser.gender,
+            nationalId: nationalId || oldUser.nationalId,
+            email: email || oldUser.email,
+            phonenumber: phonenumber || oldUser.phonenumber
+        }
+    })
+    message.message = "User Updated"
+    return message
+}
+export const InactiveUserService = async (data) => {
+    let message = {
+        message: ""
+    }
+    const userId = data
+    const oldUser = await GetUserService(userId);
+    await prisma.user.update({
+        where: {
+            userId: userId,
+        }, data: {
+            action: oldUser.action === 0 ? 1 : 0
+        }
+    })
+    message.message = oldUser.action === 1 ? "User Inactived" : "User Actived"
+    return message
 }
