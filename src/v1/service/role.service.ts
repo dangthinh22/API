@@ -17,3 +17,11 @@ export const GetAllRoleService = async () => {
     const roles = await prisma.role.findMany();
     return roles
 }
+export const GetUserRole = async () => {
+    const usercode = prisma.role.findUnique({
+        where: {
+            rolecode: "USR"
+        }
+    })
+    return usercode
+}

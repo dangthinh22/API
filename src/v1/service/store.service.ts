@@ -15,3 +15,15 @@ export const CreateStoreService = async (data) => {
         console.log(error);
     }
 }
+export const GetAllStoresService = async () => {
+    try {
+        const stores = await prisma.store.findMany();
+        return stores
+    } catch (error) {
+        console.log(error);
+
+    }
+}
+export const GetStoreById = async (storeId: string): Promise<any> => {
+
+}

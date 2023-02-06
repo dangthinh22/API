@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { CreateStoreService } from './../service/store.service';
+import { CreateStoreService, GetAllStoresService, } from './../service';
 export const CreateStore = async (req: Request, res: Response) => {
     const data = req.body
     try {
@@ -7,6 +7,14 @@ export const CreateStore = async (req: Request, res: Response) => {
         return res.status(200).json(
             store
         )
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const GetAllStores = async (req: Request, res: Response) => {
+    try {
+        const stores = await GetAllStoresService();
+        return res.status(200).json(stores)
     } catch (error) {
         console.log(error);
     }

@@ -11,7 +11,7 @@ export const CreateUser = async (req: Request, res: Response) => {
     }
 }
 export const GetUser = async (req: Request, res: Response) => {
-    const userid = req.params.userid
+    const userid = req.query.userid
     try {
         const user = await GetUserService(userid)
         res.cookie("ABC", "ABC")
@@ -46,7 +46,7 @@ export const UpdateUser = async (req: Request, res: Response) => {
 }
 export const InactiveUser = async (req: Request, res: Response) => {
     try {
-        const userId = req.params.userid
+        const userId = req.query.userid
         const message = await InactiveUserService(userId)
         return res.status(200).json(message)
     } catch (error) {

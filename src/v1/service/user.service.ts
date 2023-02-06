@@ -1,11 +1,12 @@
 import { HashPassword } from "../helper";
 import prisma from './../../config/db.config';
 import { SigninService } from './auth.service';
+import { GetUserRole } from './role.service';
 
 
 export const CreateUserService = async (data) => {
     const { firstname, lastname, genderId, nationalId, email, phonenumber, password, roleId, image } = data;
-
+    const userrole = await GetUserRole()
     const hashedPassword = await HashPassword(password)
     const login = {
         email: email,
@@ -20,7 +21,7 @@ export const CreateUserService = async (data) => {
             email: email,
             phonenumber: phonenumber,
             password: hashedPassword,
-            role: roleId,
+            role: roleId || userrole,
             image: image
             // action: action
         }
@@ -45,7 +46,7 @@ export const GetUserService = async (data) => {
             action: true,
             roleId: {
                 select: {
-                    roleId: true,
+                    // roleId: true,
                     rolename: true
                 }
             },
