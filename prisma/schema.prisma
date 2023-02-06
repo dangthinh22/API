@@ -111,6 +111,7 @@ model Post {
     userId     String
     user       User     @relation(fields: [userId], references: [userId])
     tilte      String
+    content    String
     action     Int
     modifiedBy String?
     createdAt  DateTime @default(now())

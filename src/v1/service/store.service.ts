@@ -24,6 +24,59 @@ export const GetAllStoresService = async () => {
 
     }
 }
-export const GetStoreById = async (storeId: string): Promise<any> => {
+export const GetStoreByIdSerive = async (storeId): Promise<any> => {
+    // return new Promise<any>(async (resolve, reject) => {
+    try {
+        const store = await prisma.store.findUnique({
+            where: {
+                storeId: storeId,
+            }, select: {
+                storeId: true,
+                storeName: true,
+                storeAddress: true,
+                storeNumber: true,
+                description: true,
+                action: true,
+                modifiedBy: true,
+            }
+        })
+        return store;
+        // if (store) {
+        //     return store
+        // }
+        // throw new Error("Store Not Found");
+    }
+    catch (error) {
+        throw new Error(error);
+    }
+}
+export const InactiveStoreService = async (storeId) => {
+    let message = {
+        statusCode: 1,
+        message: "",
+    }
+    try {
+        const oldStore = await prisma.store.findUnique({
+            where: {
+                storeId: storeId
+            }, select: {
+                storeId: true,
+                action: true,
+                modifiedBy: true,
+            }
+        })
+        await prisma.store.update({
+            where: {
+                storeId: storeId
+            }, data: {
+                action: oldStore.action === 1 ? 0 : 1
+            }
+        })
+        message.message = "Updated!!";
+        message.statusCode = 200;
+        return message;
+    } catch (error) {
+        console.log(error);
 
+    }
 }
