@@ -66,7 +66,7 @@ model Store {
     updatedAt        DateTime           @updatedAt
     StoreCertificate StoreCertificate[]
     Plan             Plan[]
-    StoreImage       StoreImage[]
+    Image            Image[]
 }
 
 model Certificate {
@@ -118,10 +118,20 @@ model Post {
     updatedAt  DateTime @updatedAt
 }
 
-model StoreImage {
+// model StoreImage {
+//     imageId    String   @id @unique
+//     storeId    String
+//     store      Store    @relation(fields: [storeId], references: [storeId])
+//     modifiedBy String?
+//     createdAt  DateTime @default(now())
+//     updatedAt  DateTime @updatedAt
+// }
+
+model Image {
     imageId    String   @id @unique @default(uuid())
     storeId    String
     store      Store    @relation(fields: [storeId], references: [storeId])
+    path       String
     modifiedBy String?
     createdAt  DateTime @default(now())
     updatedAt  DateTime @updatedAt

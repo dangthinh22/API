@@ -72,11 +72,13 @@ export const InactiveStoreService = async (storeId) => {
                 action: oldStore.action === 1 ? 0 : 1
             }
         })
-        message.message = "Updated!!";
+        message.message = oldStore.action === 1 ? "Inactived!" : "Actived";
         message.statusCode = 200;
-        return message;
     } catch (error) {
+        message.message = "Inactive/Active Failed";
+        message.statusCode = 400;
         console.log(error);
 
     }
+    return message;
 }
