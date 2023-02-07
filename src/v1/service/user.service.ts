@@ -41,6 +41,7 @@ export const CreateUserService = async (data) => {
                 // action: action
             }
         })
+        service.statusCode = 200;
         service.message = await SigninService(login)
 
     } catch (error) {

@@ -25,7 +25,15 @@ export const CreateStoreService = async (data) => {
 }
 export const GetAllStoresService = async () => {
     try {
-        const stores = await prisma.store.findMany();
+        const stores = await prisma.store.findMany({
+            select: {
+                storeId: true,
+                storeName: true,
+                storeAddress: true,
+                StoreCertificate: true,
+                modifiedBy: true
+            }
+        });
         return stores
     } catch (error) {
         console.log(error);
