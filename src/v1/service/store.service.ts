@@ -31,6 +31,7 @@ export const GetAllStoresService = async () => {
                 storeName: true,
                 storeAddress: true,
                 StoreCertificate: true,
+                action: true,
                 modifiedBy: true
             }
         });
