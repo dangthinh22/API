@@ -30,9 +30,10 @@ export const GetAllStoresService = async () => {
                 storeId: true,
                 storeName: true,
                 storeAddress: true,
-                StoreCertificate: true,
                 action: true,
-                modifiedBy: true
+                modifiedBy: true,
+                description: true,
+                StoreCertificate: true,
             }, orderBy: {
                 createdAt: "desc"
             }
