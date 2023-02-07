@@ -1,11 +1,14 @@
 import { Request, Response } from 'express';
-import { CreateStoreService, GetAllStoresService, GetStoreByIdSerive, InactiveStoreService } from './../service';
+import { CreateStoreService, GetAllStoresService, GetStoreByIdSerive, InactiveStoreService, UpdateStoreService } from './../service';
 export const CreateStore = async (req: Request, res: Response) => {
     const data = req.body
     try {
-        const store = await CreateStoreService(data);
-        return res.status(200).json(
-            store
+        const message = await CreateStoreService(data);
+        return res.status(message.statusCode).json(
+            {
+                statusCode: message.statusCode,
+                message: message.message
+            }
         )
     } catch (error) {
         console.log(error);
@@ -14,7 +17,10 @@ export const CreateStore = async (req: Request, res: Response) => {
 export const GetAllStores = async (req: Request, res: Response) => {
     try {
         const stores = await GetAllStoresService();
-        return res.status(200).json(stores)
+        return res.status(200).json({
+            statusCode: 200,
+            stores: stores
+        })
     } catch (error) {
         console.log(error);
     }
@@ -22,12 +28,10 @@ export const GetAllStores = async (req: Request, res: Response) => {
 export const GetStoreById = async (req: Request, res: Response) => {
     try {
         const storeId = req.query.storeId;
-        const store = await GetStoreByIdSerive(storeId);
-        if (store) {
-            return res.status(200).json(store);
-        }
-        return res.status(404).json({
-            message: "Store Not Found!"
+        const message = await GetStoreByIdSerive(storeId);
+        return res.status(message.statusCode).json({
+            statusCode: message.statusCode,
+            store: message.message
         })
     } catch (error) {
         console.log(error);
@@ -37,9 +41,21 @@ export const InactiveStore = async (req: Request, res: Response) => {
     try {
         const storeId = req.query.storeId;
         const message = await InactiveStoreService(storeId);
-        return res.status(message.statusCode === 400 ? 400 : 200).json(message)
+        return res.status(message.statusCode).json(message)
     } catch (error) {
         console.log(error);
+
+    }
+}
+export const UpdateStore = async (req: Request, res: Response) => {
+    try {
+        const data = req.body;
+        const message = await UpdateStoreService(data)
+        return res.status(message.statusCode).json({
+            statusCode: message.statusCode,
+            message: message.message,
+        })
+    } catch (error) {
 
     }
 }

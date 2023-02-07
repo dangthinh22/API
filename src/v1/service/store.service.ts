@@ -1,5 +1,9 @@
 import prisma from './../../config/db.config';
 export const CreateStoreService = async (data) => {
+    let service = {
+        statusCode: 0,
+        message: null,
+    }
     const { storeName, storeAddress, storeNumber, description } = data
     try {
         const store = prisma.store.create({
@@ -10,10 +14,14 @@ export const CreateStoreService = async (data) => {
                 description: description
             }
         })
-        return store
+        service.message = store;
+        service.statusCode = 200;
     } catch (error) {
         console.log(error);
+        service.message = error;
+        service.statusCode = 200;
     }
+    return service
 }
 export const GetAllStoresService = async () => {
     try {
@@ -26,6 +34,10 @@ export const GetAllStoresService = async () => {
 }
 export const GetStoreByIdSerive = async (storeId): Promise<any> => {
     // return new Promise<any>(async (resolve, reject) => {
+    let service = {
+        statusCode: 0,
+        message: null
+    }
     try {
         const store = await prisma.store.findUnique({
             where: {
@@ -40,15 +52,21 @@ export const GetStoreByIdSerive = async (storeId): Promise<any> => {
                 modifiedBy: true,
             }
         })
-        return store;
-        // if (store) {
-        //     return store
-        // }
-        // throw new Error("Store Not Found");
+        if (store) {
+            service.message = store;
+            service.statusCode = 200;
+        } else {
+            service.message = "Store Not Existed!";
+            service.statusCode = 404;
+        }
     }
     catch (error) {
-        throw new Error(error);
+        service.message = "Store Found Failed!";
+        service.statusCode = 403;
+        console.log(error);
+
     }
+    return service
 }
 export const InactiveStoreService = async (storeId) => {
     let message = {
@@ -81,4 +99,42 @@ export const InactiveStoreService = async (storeId) => {
 
     }
     return message;
+}
+
+export const UpdateStoreService = async (data) => {
+    let service = {
+        statusCode: 0,
+        message: ""
+    }
+    try {
+        const { storeId, storeName, storeAddress, storeNumber, description } = data;
+        const oldStore = await prisma.store.findUnique({
+            where: {
+                storeId: storeId
+            }
+        })
+        if (!oldStore) {
+            service.message = "Store not found!";
+            service.statusCode = 404;
+            return service
+        }
+        await prisma.store.update({
+            where: {
+                storeId: storeId,
+            }, data: {
+                storeName: storeName ? storeName : oldStore.storeName,
+                storeAddress: storeName ? storeAddress : oldStore.storeAddress,
+                storeNumber: storeNumber ? storeNumber : oldStore.storeNumber,
+                description: description ? description : oldStore.description
+            }
+        })
+        service.message = "Successfully Updated Store!";
+        service.statusCode = 200;
+
+    } catch (error) {
+        service.message = "Failed Updated Store!";
+        service.statusCode = 401;
+        console.log(error);
+    }
+    return service
 }

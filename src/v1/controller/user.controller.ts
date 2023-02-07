@@ -4,8 +4,11 @@ import { CreateUserService, GetUserService, GetAllUsersService, UpdateUserServic
 export const CreateUser = async (req: Request, res: Response) => {
     const data = req.body
     try {
-        const user = await CreateUserService(data)
-        return res.status(200).json({ user })
+        const message = await CreateUserService(data)
+        return res.status(message.statusCode).json({
+            statusCode: message.statusCode,
+            message: message.message
+        })
     } catch (error) {
         console.log(error);
     }
@@ -13,10 +16,11 @@ export const CreateUser = async (req: Request, res: Response) => {
 export const GetUser = async (req: Request, res: Response) => {
     const userid = req.query.userid
     try {
-        const user = await GetUserService(userid)
+        const message = await GetUserService(userid)
         res.cookie("ABC", "ABC")
-        return res.status(200).json({
-            user
+        return res.status(message.statusCode).json({
+            statusCode: message.statusCode,
+            user: message.message
         })
     } catch (error) {
         console.log(error);
@@ -25,21 +29,25 @@ export const GetUser = async (req: Request, res: Response) => {
 
 export const GetAllUser = async (req: Request, res: Response) => {
     try {
-        const users = await GetAllUsersService();
-        return res.status(200).json(
-            users
+        const message = await GetAllUsersService();
+        return res.status(message.statusCode).json(
+            {
+                statusCode: message.statusCode,
+                users: message.users
+            }
         )
     } catch (error) {
         console.log(error);
-
     }
-
 }
 export const UpdateUser = async (req: Request, res: Response) => {
     try {
         const data = req.body
         const message = await UpdateUserService(data)
-        return res.status(200).json(message)
+        return res.status(message.statusCode).json({
+            statusCode: message.statusCode,
+            message: message.message
+        })
     } catch (error) {
         console.log(error);
     }
@@ -48,7 +56,10 @@ export const InactiveUser = async (req: Request, res: Response) => {
     try {
         const userId = req.query.userid
         const message = await InactiveUserService(userId)
-        return res.status(200).json(message)
+        return res.status(message.statusCode).json({
+            statusCode: message.statusCode,
+            message: message.message
+        })
     } catch (error) {
         console.log(error);
 
