@@ -33,6 +33,8 @@ export const GetAllStoresService = async () => {
                 StoreCertificate: true,
                 action: true,
                 modifiedBy: true
+            }, orderBy: {
+                createdAt: "desc"
             }
         });
         return stores

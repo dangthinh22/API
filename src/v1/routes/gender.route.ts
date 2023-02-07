@@ -1,10 +1,10 @@
 import { Router } from "express"
-import { CreateGender } from "../controller"
+import { CreateGender, GetAllGenders } from "../controller"
 
 const GenderRouter = Router()
 
 
 GenderRouter.post("/gender", CreateGender)
-
+GenderRouter.get("/genders", GetAllGenders)
 
 export default GenderRouter

@@ -1,7 +1,7 @@
 import { CreateRoleService, GetAllRoleService } from "./role.service";
 import { SigninService } from './auth.service';
 import { CreateUserService, GetUserService, GetAllUsersService, UpdateUserService, InactiveUserService } from './user.service';
-import { CreatGenderService } from "./gender.service";
+import { CreatGenderService, GetAllGendersService } from "./gender.service";
 import { CreateStoreService, GetAllStoresService, GetStoreByIdSerive, InactiveStoreService, UpdateStoreService } from './store.service';
 
 
@@ -9,7 +9,7 @@ import { CreateStoreService, GetAllStoresService, GetStoreByIdSerive, InactiveSt
 export {
     CreateUserService, GetUserService, GetAllUsersService, UpdateUserService, InactiveUserService,
     CreateRoleService, GetAllRoleService,
-    CreatGenderService,
+    CreatGenderService, GetAllGendersService,
     CreateStoreService, GetAllStoresService, GetStoreByIdSerive, InactiveStoreService, UpdateStoreService,
     SigninService
 }

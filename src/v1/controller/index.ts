@@ -1,7 +1,7 @@
 import { CreateUser, GetUser, GetAllUser, UpdateUser, InactiveUser } from "./user.controller"
 import { CreateRole, GetAllRole } from "./role.controller"
 import { Signin } from './auth.controlelr';
-import { CreateGender } from './gender.controller';
+import { CreateGender, GetAllGenders } from './gender.controller';
 import { CreateStore, GetAllStores, GetStoreById, InactiveStore, UpdateStore } from './store.controller';
 
 
@@ -9,7 +9,7 @@ import { CreateStore, GetAllStores, GetStoreById, InactiveStore, UpdateStore } f
 export {
     CreateUser, GetUser, GetAllUser, UpdateUser, InactiveUser,
     CreateRole, GetAllRole,
-    CreateGender,
+    CreateGender, GetAllGenders,
     CreateStore, GetAllStores, GetStoreById, InactiveStore, UpdateStore,
     Signin
 }

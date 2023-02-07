@@ -114,6 +114,8 @@ export const GetAllUsersService = async () => {
                         rolename: true
                     }
                 },
+            }, orderBy: {
+                createdAt: "desc"
             }
         })
         service.statusCode = 200;
